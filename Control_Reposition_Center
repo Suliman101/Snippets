@@ -1,0 +1,18 @@
+Dim window_hb As Variant
+Dim window_wb As Variant
+Dim subh_b As Variant
+
+window_wb = Me.WindowWidth
+window_hb = Me.WindowHeight
+DoCmd.Maximize
+'object position
+Dim window_w As Variant
+Dim window_h As Variant
+'scale and reposition objects
+window_w = Me.WindowWidth
+window_h = Me.WindowHeight
+Dim ctrl As Control
+For Each ctrl In Me.Controls
+    ctrl.Left = window_w / 2 + (ctrl.Left - window_wb / 2)
+    ctrl.Top = ctrl.Top + (window_h / 25)
+Next
