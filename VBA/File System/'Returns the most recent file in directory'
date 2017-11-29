@@ -1,0 +1,25 @@
+'Returns the most recent file in directory'
+Function lastquote(pathvar As String)
+    Dim fs, f, f1, fc, s
+    Dim datelatest As Date
+    Dim fn As String
+    'folderspec = "C:\Documents and Settings\e3utbl\Desktop\FTPTest\Audit_Docs_Mgmt"
+    folderspec = pathvar
+    Set fs = CreateObject("Scripting.FileSystemObject")
+    Set f = fs.GetFolder(folderspec)
+    Set fc = f.Files
+    For Each f1 In fc
+        's = Left(f1.name, InStrRev(f1.name, ".") - 1)
+        's = Right(s, (Len(s) - Len((Left(s, InStrRev(s, "_"))))))
+        's = Replace(s, ".", "/")
+        s = f1.DateCreated
+        If IsDate(s) = True Then
+            s = CDate(s)
+            If s > datelatest Then
+                datelatest = s
+                fn = f1.name
+            End If
+        End If
+    Next
+    lastquote = fn
+End Function

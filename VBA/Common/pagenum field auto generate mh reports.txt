@@ -1,0 +1,42 @@
+'Dynamically generate page numbers
+Dim intcount As Integer
+Dim preval As String
+Dim newName As String
+Dim stidlenvar As Integer
+
+intcount = 0
+ 
+Dim rs As DAO.Recordset
+Set rs = CurrentDb.OpenRecordset("SELECT * FROM TREE")
+
+    'Check to see if the recordset actually contains rows
+If Not (rs.EOF And rs.BOF) Then
+    rs.MoveFirst 'Unnecessary in this case, but still a good habit
+    Do Until rs.EOF = True
+        If rs!Point_ID > 1 Then
+            preval = DLookup("pgcounter", "TREE", "Point_ID=" & rs!Point_ID - 1 & "")
+            If DLookup("leaksum", "TREE", "Point_ID=" & rs!Point_ID - 1 & "") <> 0 Then
+                rs.Edit
+                rs!pgcounter = preval + 5
+                rs.Update
+            Else
+                rs.Edit
+                rs!pgcounter = preval + 3
+                rs.Update
+                sqlvar = "update TREE set pgcounter =" & preval + 3 & " where Point_ID=" & Me.Point_ID.Value
+                DoCmd.RunSQL sqlvar
+            End If
+        Else
+            rs!pgcounter = 1 ' enter pagenum variable here
+        End If
+    Next
+            'Move to the next record. Don't ever forget to do this.
+            rs.MoveNext
+    Loop
+Else
+    MsgBox "There are no records in the recordset."
+End If
+rs.Close 'Close the recordset
+Set rs = Nothing 'Clean up
+
+

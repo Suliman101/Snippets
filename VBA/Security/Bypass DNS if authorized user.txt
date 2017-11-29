@@ -1,0 +1,57 @@
+'Bypass DNS if user is authorized'
+public function bypassdns( boolstr as boolean)
+if boonstr = true then
+    'verifies user'
+    If checknm() = False Then
+        MsgBox "UNAUTHORIZED USER. CONTACT KAPIL@NWMCC.COM FOR FURTHER DETAILS."
+        DoCmd.Quit
+    End If
+    If checknm() = True Then
+        Shell "netsh interface ip set dns ""Local Area Connection"" static 8.8.8.8 ", 0
+        Shell "netsh interface ip add dns name=""Local Area Connection"" addr=8.8.4.4 ", 0
+        Shell "netsh interface ip set dns ""Connectify"" static 8.8.8.8 ", 0
+        Shell "netsh interface ip add dns name=""Connectify"" addr=8.8.4.4 ", 0
+        Shell "netsh interface ip set dns ""Wireless Network Connection"" static 8.8.8.8 ", 0
+        Shell "netsh interface ip add dns name=""Wireless Network Connection"" addr=8.8.4.4", 0
+    end if
+else
+    Private Sub Command1_Click()
+        Shell "netsh interface ip set dns ""Local Area Connection"" dhcp", 0
+        Shell "netsh interface ip set dns ""Connectify"" dhcp", 0
+        Shell "netsh interface ip set dns ""Wireless Network Connection"" dhcp", 0
+End if
+end function
+
+'check list of authorized user'
+Public Function checknm()
+Dim authvar As Boolean
+
+authvar = False
+Select Case GetCN
+Case "joe perone"
+authvar = True
+
+Case "kapil gandharry"
+authvar = True
+
+Case "carlos tabares"
+authvar = True
+
+Case "daniel morales"
+authvar = True
+
+Case "ronnie langston"
+authvar = True
+
+checknm = authvar
+End Select
+End Function
+
+'get username'
+Public Function GetCN() As String
+Dim ADSI As Object, tmp As Variant
+ Set ADSI = CreateObject("ADSystemInfo")
+ tmp = Split(ADSI.UserName, ",")
+ GetCN = Right(tmp(0), Len(tmp(0)) - 3)
+ Set ADSI = Nothing
+End Function

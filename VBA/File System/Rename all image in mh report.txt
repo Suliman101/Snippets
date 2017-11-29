@@ -1,0 +1,39 @@
+' function applies naming convention to all records and renames jpg files with ST_ID and Mapno
+
+
+Dim intcount As Integer
+Dim oldName As String
+Dim newName As String
+Dim stidlenvar As Integer
+
+intcount = 0
+ 
+Dim rs As DAO.Recordset
+Set rs = CurrentDb.OpenRecordset("SELECT * FROM TREE")
+
+'Check to see if the recordset actually contains rows
+If Not (rs.EOF And rs.BOF) Then
+    rs.MoveFirst 'Unnecessary in this case, but still a good habit
+    Do Until rs.EOF = True
+    'count length of st_id
+    stidlenvar = Len(rs!ST_ID) + 4
+    'loop through images
+    For intcount = 1 To 4
+        oldName = rs("Photo" & intcount)
+	'check if naming convention not applied then rename and update record
+        If Left(Right(oldName, stidlenvar), stidlenvar) <> rs!ST_ID Then
+            newName = Left(oldName, Len(oldName) - 4) & "_" & rs!map_no & "_" & rs!ST_ID & ".jpg"
+            Name oldName As newName
+            rs.Edit
+            rs("PHOTO" & intcount) = newName
+            rs.Update
+        End If      
+    Next
+        'Move to the next record. Don't ever forget to do this.
+        rs.MoveNext
+    Loop
+Else
+    MsgBox "There are no records in the recordset."
+End If
+rs.Close 'Close the recordset
+Set rs = Nothing 'Clean up

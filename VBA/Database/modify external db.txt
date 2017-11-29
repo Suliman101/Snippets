@@ -1,0 +1,13 @@
+Dim db as DAO.Database
+Dim rs as DAO.Recordset
+
+Set db = Opendatabase("PATH AND FILENAME TO DB.mdb")
+
+Set rs = db.Openrecordset("NAME OF TABLE")
+
+rs.AddNew
+rs! .... = .....
+rs.Update
+
+rs.Close
+db.Close

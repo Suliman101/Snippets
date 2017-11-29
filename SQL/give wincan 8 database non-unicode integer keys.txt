@@ -1,0 +1,13 @@
+'give tables integer keys
+    SQL = "ALTER TABLE SI_T ADD SI_scounter Integer"
+    DoCmd.RunSQL SQL
+    
+    SQL = "ALTER TABLE SO_T ADD S_ID Integer"
+    DoCmd.RunSQL SQL
+    
+    SQL = "UPDATE S_T INNER JOIN SI_T ON S_T.S_ID = SI_T.SI_Section_ID SET SI_T.SI_scounter = S_T.S_Counter WHERE (((SI_T.SI_Section_ID)=S_T.S_ID));"
+    DoCmd.RunSQL SQL
+    
+    SQL = "UPDATE SI_T INNER JOIN SO_T ON SI_T.SI_ID = SO_T.SO_Inspecs_ID SET SO_T.S_ID = SI_T.SI_scounter WHERE (((SO_T.SO_Inspecs_ID)=SI_T.SI_ID));"
+    DoCmd.RunSQL SQL
+    

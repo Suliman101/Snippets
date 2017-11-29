@@ -1,0 +1,25 @@
+'Dynamic adjusting Diagonal line between two objects
+
+
+
+Dim bboxh As Variant
+Dim rboxh As Variant
+
+bboxh = Me.bbox.Top
+rboxh = Me.rbox.Top
+
+If bboxh < rboxh Then
+Me.Line0.LineSlant = True
+Me.Line0.Left = Me.rbox.Left + Me.rbox.Width
+Me.Line0.Top = Me.bbox.Top + (Me.bbox.Height - (Me.bbox.Height / 2))
+Me.Line0.Height = rboxh - bboxh
+Me.Line0.Width = Me.bbox.Left - Me.rbox.Left - Me.rbox.Width
+End If
+
+If rboxh < bboxh Then
+Me.Line0.LineSlant = False
+Me.Line0.Left = Me.rbox.Left + Me.rbox.Width
+Me.Line0.Top = Me.rbox.Top + (Me.rbox.Height - (Me.rbox.Height / 2))
+Me.Line0.Height = bboxh - rboxh
+Me.Line0.Width = Me.bbox.Left - Me.rbox.Left - Me.rbox.Width
+End If

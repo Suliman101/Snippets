@@ -1,0 +1,52 @@
+    SQL = "ALTER TABLE SI_T ADD SI_scounter Integer"
+    DoCmd.RunSQL SQL
+
+sqlvar = "update SO_T set SO_OpCode ='" & Me.valbox.Value & "' where SO_AutoNumber=" & Me.SO_AutoNumber.Value
+DoCmd.RunSQL sqlvar
+
+
+Option Compare Database
+Dim pgcountvar As Integer
+Dim startpagevar As Integer
+
+Private Sub Report_Load()
+If IsNull(Me.OpenArgs) = False Then
+startpagevar = 1
+Else
+startpagevar = 1
+End If
+pgcountvar = startpagevar
+
+Dim SQL As String
+
+    SQL = "ALTER TABLE TREE ADD pgcounter Integer"
+    DoCmd.RunSQL SQL
+
+End Sub
+
+Private Sub Detail_Format(Cancel As Integer, FormatCount As Integer)
+
+If Me.leaksum.Value = 0 Then
+Me.noinfilbox.Visible = True
+Me.noinfilbox.Value = "No Infiltration"
+Else
+Me.noinfilbox.Visible = False
+End If
+
+
+If Me.Point_ID.Value > 1 Then
+    pgcountvar = (pgcountvar + 3)
+    If Me.leaksum.Value > 0 Then
+        pgcountvar = (pgcountvar + 2)
+    End If
+End If
+
+    Me.Text55.Value = pgcountvar - 425
+
+Me.leak1txt.Value = Right(Me.leak1type.Value, 2)
+Me.leak2txt.Value = Right(Me.leak2type.Value, 2)
+Me.leak3txt.Value = Right(Me.leak3type.Value, 2)
+Me.leak4txt.Value = Right(Me.leak4type.Value, 2)
+End Sub
+
+

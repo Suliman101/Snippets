@@ -1,0 +1,27 @@
+'Decalre variables globally
+Dim rvalue As Integer
+Dim gvalue As Integer
+Dim bvalue As Integer
+
+
+'rgb function
+Public Function getcolorfunc(tempvar1 As Integer)
+bvalue = 0
+If tempvar1 < 50 Then
+rvalue = 255
+gvalue = Int(tempvar1 / 100 * 510)
+End If
+If tempvar1 > 50 Then
+rvalue = 255 - (Int(tempvar1 / 50 * tempvar1))
+gvalue = 255
+End If
+If tempvar1 = 50 Then
+rvalue = 255
+gvalue = 255
+End If
+If tempvar1 > 79 Then
+rvalue = 0
+gvalue = 255 - (Int(tempvar1 / 85 * tempvar1))
+bvalue = 0
+End If
+End Function

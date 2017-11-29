@@ -1,0 +1,30 @@
+' function replaces image paths with corrected photos from another survey
+Dim intcount As Integer
+Dim oldName As String
+Dim newName As String
+Dim stidlenvar As Integer
+
+intcount = 0
+ 
+Dim rs2 As DAO.Recordset
+Set rs2 = CurrentDb.OpenRecordset("SELECT * FROM TREE")
+
+'Check to see if the recordset actually contains rows
+If Not (rs2.EOF And rs2.BOF) Then
+    rs2.MoveFirst 'Unnecessary in this case, but still a good habit
+    Do Until rs2.EOF = True
+        'count length of st_id
+        stidlenvar = Len(rs2!ST_ID) + 4
+        'loop through images
+        For intcount = 1 To 4
+                rs2.Edit
+                rs2("PHOTO" & intcount) = dlookup( "PHOTO" & intcount, "correct table", "St_id='" & rs2!St_id & "'"
+                rs2.Update
+        Next
+            rs2.MoveNext 'Required
+    Loop
+Else
+    MsgBox "There are no records in the recordset."
+End If
+rs2.Close 'Close the recordset
+Set rs2 = Nothing 'Clean up

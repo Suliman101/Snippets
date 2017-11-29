@@ -1,0 +1,23 @@
+
+'Reposition all elements based on maximized window based on scale'
+
+Dim window_hb As Variant
+Dim window_wb As Variant
+Dim subh_b As Variant
+
+window_wb = Me.WindowWidth
+window_hb = Me.WindowHeight
+Me.NavigationButtons = False
+Me.ScrollBars = False
+DoCmd.Maximize
+'object position
+Dim window_w As Variant
+Dim window_h As Variant
+'scale and reposition objects
+window_w = Me.WindowWidth
+window_h = Me.WindowHeight
+Dim ctrl2 As Control
+For Each ctrl2 In Me.Controls
+    ctrl2.Left = window_w / 2 + (ctrl2.Left - window_wb / 2)
+    ctrl2.Top = ctrl2.Top + (window_h / 20)
+Next

@@ -1,0 +1,29 @@
+Function fSubFolderExists(sRootPath As String, sSub As String) 'Returns folder eSub path in folder sRootPath
+Dim oFso As Object
+Dim oTopFolder As Object
+Dim oSubtop As Object
+Dim oSubs As Object
+Dim oFolder As Object
+Dim oSubfolder As Object
+
+Set oFso = CreateObject("Scripting.FileSystemObject")
+Set oTopFolder = oFso.getfolder(sRootPath)
+Set oSubs = oTopFolder.subfolders
+
+For Each oFolder In oSubs
+    If oFolder.Name Like "*" & sSub & "*" Then
+        fSubFolderExists = oFolder.Path
+        Set oFso = Nothing
+        Exit Function
+    End If
+    
+    Set oSubtop = oFolder.subfolders
+    For Each oSubfolder In oSubtop
+    If oSubfolder.Name Like "*" & sSub & "*" Then
+        fSubFolderExists = oSubfolder.Path
+        Set oFso = Nothing
+        Exit Function
+    End If
+    Next
+Next
+End Function

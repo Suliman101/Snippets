@@ -1,0 +1,9 @@
+'Export report as pdf Eg: exportpdf ("report name in access", "report file name", "path of file", "open arguements")
+
+public function exportpdf (reportname as String, fileReportName as String, pathstr as String, Optional openargsvar as Variant )
+
+DoCmd.OpenReport reportname, acViewPreview, , , , openargsvar
+DoCmd.OutputTo acOutputReport, reportname, acFormatPDF, pathstr & "/" & fileReportName & ".pdf", True
+DoCmd.Close acReport, reportname
+
+end function

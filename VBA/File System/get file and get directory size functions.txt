@@ -1,0 +1,27 @@
+Public Function filelmb(pathstr As String) As Variant
+    If Right(pathstr, 1) <> "\" And IsNull(pathstr) = False And pathstr <> "" And pathstr <> "0" Then
+        'filelmb = Nz(ULongToCurrency(FileLen(pathstr)) / 1000000, 0)
+        Dim fs, f, s
+        Set fs = CreateObject("Scripting.FileSystemObject")
+        Set f = fs.GetFile(pathstr)
+        s = f.Size  'DateCreated
+        filelmb = s / 1000000
+    Else
+        filelmb = 0
+    End If
+End Function
+
+Public Function dirmb(pathstr As String) As Variant
+    If Right(pathstr, 1) <> "\" And IsNull(pathstr) = False And pathstr <> "" And pathstr <> "0" Then
+        'filelmb = Nz(ULongToCurrency(FileLen(pathstr)) / 1000000, 0)
+        Dim fs, f, s
+        Set fs = CreateObject("Scripting.FileSystemObject")
+        Set f = fs.getfolder(pathstr)
+        s = f.Size  'DateCreated
+        dirmb = s / 1000000
+        Set fs = Nothing
+        Set f = Nothing
+    Else
+        dirmb = 0
+    End If
+End Function

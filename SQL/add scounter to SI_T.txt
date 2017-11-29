@@ -1,0 +1,2 @@
+UPDATE S_T INNER JOIN SI_T ON S_T.S_ID = SI_T.SI_Section_ID SET SI_T.SI_scounter = S_T.S_Counter
+WHERE (((SI_T.SI_Section_ID)=S_T.S_ID));

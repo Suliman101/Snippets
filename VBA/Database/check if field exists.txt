@@ -1,0 +1,9 @@
+Function FieldExists(fieldName As String, tablename As String, dbvar As DAO.Database) As Boolean
+Dim exists As Boolean
+
+   exists = False
+   On Error Resume Next
+   exists = dbvar.TableDefs(tablename).Fields(fieldName).Name = fieldName
+
+   FieldExists = exists
+End Function

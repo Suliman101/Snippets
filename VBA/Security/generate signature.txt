@@ -1,0 +1,7 @@
+'generate signature
+Dim rev_ID As String
+Dim datetimevar As String
+
+datetimevar = Now()
+rev_ID = Environ("userdomain") & "\" & Environ("username") & "-" & Environ("COMPUTERNAME") & "-" & datetimevar
+Me.reviewer_ID.Value = rev_ID

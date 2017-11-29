@@ -1,0 +1,25 @@
+Function GetBitrate(ByVal filePath As String) As Integer
+Set FSO = CreateObject("Scripting.FileSystemObject")
+Set objShell = CreateObject("Shell.Application")
+Dim tempstr As String
+
+If Not FSO.FileExists(filePath) Then
+GetBitrate = ""
+End If
+
+strParent = FSO.GetParentFolderName(filePath)
+strArgFileName = FSO.GetFileName(filePath)
+Set objFolder = objShell.Namespace(strParent)
+
+For Each strFileName In objFolder.Items
+    If objFolder.GetDetailsOf(strFileName, 0) = strArgFileName Then
+        tempstr = objFolder.GetDetailsOf(strFileName, 303)
+        tempstr = Mid(tempstr, 2, Len(tempstr) - 5)
+        GetBitrate = CInt(tempstr)
+   End If
+Next
+
+Set FSO = Nothing
+Set objShell = Nothing
+
+End Function

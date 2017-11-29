@@ -1,0 +1,9 @@
+'Return Object Based on Name equals string
+'Example fetchobj("Text1").BackColor = RGB(0, 255, 0)
+Public Function fetchobj(ByVal ctrlname As String) As Object
+For Each ctrl In Me.Controls
+    If ctrl.Name = ctrlname Then
+       Set fetchobj = ctrl
+    End If
+Next
+End Function

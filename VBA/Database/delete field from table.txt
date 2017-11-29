@@ -1,0 +1,7 @@
+Public Function deletefield(fieldvar As String, tablevar As String, dbvar As DAO.Database)
+If FieldExists(fieldvar, tablevar, dbvar) = True Then
+    Dim sqlstr As String
+    sqlstr = "ALTER TABLE " & tablevar & " DROP COLUMN " & fieldvar & ";"
+    dbvar.Execute sqlstr
+End If
+End Function

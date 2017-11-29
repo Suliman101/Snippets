@@ -1,0 +1,17 @@
+Public Function chkvid(insptype As String, secno As Integer) As Boolean
+Dim pathvar As String
+pathvar = DLookup("dbpath", "mainconfig")
+pathvar = Left(pathvar, InStrRev(pathvar, "\db\"))
+pathvar = pathvar & "video\"
+'pathvar = "O:\ROC014-14\ROC014-14\Video\"
+
+pathvar = pathvar & DLookup("SO_ClipFileName1", "SO_T", "S_ID = " & secno & _
+    " AND SO_Counter = 1 AND SO_inspname = '" & insptype & "'")
+    
+If Len(Dir(pathvar)) = 0 Then
+   chkvid = False
+Else
+   chkvid = True
+End If
+
+End Function

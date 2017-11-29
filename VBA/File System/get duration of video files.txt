@@ -1,0 +1,22 @@
+Function GetDuration(ByVal filePath As String) As String
+Set FSO = CreateObject("Scripting.FileSystemObject")
+Set objShell = CreateObject("Shell.Application")
+
+If Not FSO.FileExists(filePath) Then
+GetDuration = ""
+End If
+
+strParent = FSO.GetParentFolderName(filePath)
+strArgFileName = FSO.GetFileName(filePath)
+Set objFolder = objShell.Namespace(strParent)
+
+For Each strFileName In objFolder.Items
+   If objFolder.GetDetailsOf(strFileName, 0) = strArgFileName Then
+   GetDuration = objFolder.GetDetailsOf(strFileName, 27)
+   End If
+Next
+
+Set FSO = Nothing
+Set objShell = Nothing
+
+End Function

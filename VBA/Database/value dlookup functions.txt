@@ -1,0 +1,33 @@
+public function geteval(initval as variant, tablevar as string)
+
+geteval = dlookup("desc", tablevar, "code=" & left(initval, (instr(1, initval, " ") -  1)))
+
+end function
+
+
+
+public function getval(fieldnamevar as string)
+
+getval =  dlookup(fieldnamevar, "TREE", "Point_ID=" & me.point_id.value)
+
+end function
+
+public function popval (fieldnamevar as string, tablevar as string, othval as variant)
+
+If isnull(othval) = false
+popval = otherval
+Else
+
+dim getval as variant
+dim geteval as variant
+
+getval =  dlookup(fieldnamevar, "TREE", "Point_ID=" & me.point_id.value)
+geteval = dlookup("desc", tablevar, "code=" & left(getval , (instr(1, getval , " ") -  1)))
+
+If geteval= Null Then
+popval = "Unspecified"
+End If
+
+end if
+
+end function

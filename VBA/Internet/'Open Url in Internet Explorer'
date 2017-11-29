@@ -1,0 +1,31 @@
+'Open Url in Internet Explorer'
+Public Function iegeturl(urlvar As String)
+
+Dim wshShell
+Set wshShell = CreateObject("WScript.Shell")
+
+wshShell.Run "iexplore -nomerge " & urlvar
+
+Dim objShell
+Set objShell = CreateObject("Shell.Application")
+
+Dim objShellWindows
+Set objShellWindows = objShell.Windows
+
+Dim i
+Dim ieObject
+For i = 0 To objShellWindows.Count - 1
+    If InStr(objShellWindows.Item(i).fullname, "iexplore.exe") <> 0 Then
+        Set ieObject = objShellWindows.Item(i)
+        If VarType(ieObject.Document) = 8 Then
+            'MsgBox "Loaded " & ieObject.Document.Title
+            Exit For
+        End If
+    End If
+Next
+
+Set ieObject = Nothing
+Set objShellWindows = Nothing
+Set objShell = Nothing
+Set wshShell = Nothing
+End Function

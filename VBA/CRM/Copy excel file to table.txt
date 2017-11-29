@@ -1,0 +1,40 @@
+Public Function copyexcel()
+'path to excel file as relative path'
+If Dir(CurrentProject.Path & "\resources\contactx.xlsx", vbDirectory) = "" Then
+        FileCopy "\\NWATER-FILE1\Apps\DATA\Kapil\Projects\2014 projects\Proposal Generator\Resources\contactx.xlsx", _
+        CurrentProject.Path & "\" & "resources\contactx.xlsx"  ' Copy source to target.
+End If
+
+Dim excelpath As Variant
+If ObjectExists("Table", "Connection") Then
+        DoCmd.DeleteObject acTable, "Connection"
+    End If
+If ObjectExists("Table", "Connection") = False Then
+    DoCmd.CopyObject , "Connection", acTable, "Connection_t"
+End If
+
+excelpath = CurrentProject.Path & "\Resources\contactx.xlsx"
+
+Dim WrksheetName As String
+Dim i As Integer
+Dim xl As Object
+Set xl = CreateObject("Excel.Application")
+xl.Application.Visible = False
+xl.Workbooks.Open excelpath
+xl.Application.DisplayAlerts = False
+
+With xl
+    '.Visible = False
+    With .Workbooks(.Workbooks.Count)
+        For i = 1 To .Worksheets.Count
+            WrksheetName = .Worksheets(i).name
+            .RefreshAll
+            .SaveAs FILENAME:=excelpath
+            DoCmd.TransferSpreadsheet acImport, , "Connection", excelpath, -1
+        Next i
+        .Close savechanges:=True
+    End With
+End With
+xl.Quit
+Set xl = Nothing
+End Function

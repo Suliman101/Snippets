@@ -1,0 +1,10 @@
+'create query based on string eg. cquery ("query name", "query sql string")
+
+public function cquery(query_name as string, sqlstr as string)
+
+Dim db As DAO.Database
+Dim qd As DAO.QueryDef
+Set db = CurrentDb
+Set qryDef = db.CreateQueryDef(query_name, sqlstr)
+
+end function

@@ -1,0 +1,8 @@
+'Returns Logged in User Name'
+Public Function GetCN() As String
+Dim ADSI As Object, tmp As Variant
+ Set ADSI = CreateObject("ADSystemInfo")
+ tmp = Split(ADSI.UserName, ",")
+ GetCN = Right(tmp(0), Len(tmp(0)) - 3)
+ Set ADSI = Nothing
+End Function

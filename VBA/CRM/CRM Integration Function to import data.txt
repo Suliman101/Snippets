@@ -1,0 +1,33 @@
+
+'function creates a table from template, opens nonvisible excel file, which is set to refresh on open from CRM database connection, saves the excel file without prompt, then imports data from an excel file to said table
+If ObjectExists("Table", "Connection") Then
+        DoCmd.DeleteObject acTable, "Connection"
+    End If
+If ObjectExists("Table", "Connection") = False Then
+    DoCmd.CopyObject , "Connection", acTable, "Connection_t"
+End If
+
+excelpath = CurrentProject.Path & "\Resources\contactx.xlsx"
+
+Dim WrksheetName As String
+Dim i As Integer
+Dim xl As Object
+Set xl = CreateObject("Excel.Application")
+xl.Application.Visible = False
+xl.Workbooks.Open excelpath
+xl.Application.DisplayAlerts = False
+
+With xl
+    '.Visible = False
+    With .Workbooks(.Workbooks.Count)
+        For i = 1 To .Worksheets.Count
+            WrksheetName = .Worksheets(i).Name
+            .RefreshAll
+            .SaveAs FileName:=excelpath
+            DoCmd.TransferSpreadsheet acImport, , "Connection", excelpath, -1
+        Next i
+        .Close savechanges:=True
+    End With
+End With
+xl.Quit
+Set xl = Nothing

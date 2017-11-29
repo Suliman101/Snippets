@@ -1,0 +1,10 @@
+'Replace all special characters for proper file and directory names'
+Function nameconv(strInput As String) As String
+    Dim strInvalidChars As String
+    Dim i As Long
+    strInvalidChars = "\/:*?""<>|{}&."
+    For i = 1 To Len(strInvalidChars)
+        strInput = Replace$(strInput, Mid$(strInvalidChars, i, 1), "-")
+    Next
+    nameconv = strInput
+End Function

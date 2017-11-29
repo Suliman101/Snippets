@@ -1,0 +1,38 @@
+'save record
+
+DoCmd.RunCommand acCmdSaveRecord
+
+'back up database
+   Dim ws As Workspace
+   Dim db As Database
+   Dim LFilename As String
+   Dim nowvar1 As String
+   Dim projpathvar1 As String
+   
+   nowvar1 = Now()
+   nowvar1 = Replace(nowvar1, ":", ".")
+   
+   nowvar1 = Replace(nowvar1, "/", ".")
+   
+   
+   'Get default Workspace
+   Set ws = DBEngine.Workspaces(0)
+   
+   'Path and file name for new mdb file
+   LFilename = CurrentProject.Path & "\backup\" & nowvar1 & ".mdb"
+   
+   'Make sure there isn't already a file with the name of the new database
+   If Dir(LFilename) <> "" Then Kill LFilename
+   
+   MsgBox LFilename
+   'Create a new mdb file
+   Set db = ws.CreateDatabase(LFilename, dbLangGeneral)
+   
+   'For lookup tables, export both table definition and data to new mdb file
+   DoCmd.TransferDatabase acExport, "Microsoft Access", LFilename, acTable, "card_data", "card_data", False
+   
+   
+   db.Close
+   Set db = Nothing
+
+

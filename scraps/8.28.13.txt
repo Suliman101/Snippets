@@ -1,0 +1,68 @@
+Public Function popval(fieldnamevar As String, tablevar As String, othval As Variant)
+Dim othchk As Variant
+
+If IsNull(othval) = False Then
+    othchk = getvalue(othval)
+    If IsNull(othchk) = False Then
+        popval = othchk
+        Exit Function
+    End If
+End If
+    
+    Dim getval As Variant
+    Dim geteval As Variant
+    'getval = getvalue(fieldnamevar)
+    getval = Nz(DLookup(fieldnamevar, "TREE", "Point_ID=" & Me.Point_ID.Value), "     ")
+    geteval = DLookup("desc", tablevar, "code='" & Left(getval, (InStr(1, getval, " ") - 1)) & "'")
+
+    If geteval = Null Then
+        popval = "Unspecified"
+    Else
+        popval = geteval
+    End If
+
+End Function
+
+
+
+
+dim intcount as integer
+dim oldName as string
+DIM newName as string
+intcount = 0
+ 
+
+
+Dim rs As DAO.Recordset
+Set rs = CurrentDb.OpenRecordset("SELECT * FROM TREE")
+
+'Check to see if the recordset actually contains rows
+If Not (rs.EOF And rs.BOF) Then
+    rs.MoveFirst 'Unnecessary in this case, but still a good habit
+    Do Until rs.EOF = True
+
+        'Perform an edit
+	for intcount 1 to 4 
+		oldname = rs("PHOTO"&INTCOUNT)
+		newname = Left(rs!PHOTO1, Len(rs!PHOTO1) - 4) & "_" & rs!ST_ID & ".jpg"
+		name oldname as newname
+        	rs.Edit
+        	'rs!VendorYN = True
+        	rs("PHOTO"&INTCOUNT) = Left(oldname , Len(oldname) - 4) & "_" & rs!ST_ID & ".jpg" 'The other way to refer to a field
+        	rs.Update
+	Next
+
+        'Save contact name into a variable
+        sContactName = rs!FirstName & " " & rs!LastName
+
+        'Move to the next record. Don't ever forget to do this.
+        rs.MoveNext
+    Loop
+Else
+    MsgBox "There are no records in the recordset."
+End If
+
+MsgBox "Finished looping through records."
+
+rs.Close 'Close the recordset
+Set rs = Nothing 'Clean up

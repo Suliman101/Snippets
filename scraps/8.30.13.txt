@@ -1,0 +1,47 @@
+Option Compare Database
+
+Private Sub Command0_Click()
+Dim intcount As Integer
+Dim oldName As String
+Dim newName As String
+Dim stidlenvar As Integer
+
+intcount = 0
+ 
+Dim rs As DAO.Recordset
+Set rs = CurrentDb.OpenRecordset("SELECT * FROM TREE")
+
+'Check to see if the recordset actually contains rows
+If Not (rs.EOF And rs.BOF) Then
+    rs.MoveFirst 'Unnecessary in this case, but still a good habit
+    Do Until rs.EOF = True
+    stidlenvar = Len(rs!ST_ID)
+        'Perform an edit
+    For intcount = 1 To 4
+        oldName = rs("Photo" & intcount)
+        If Left(Right(oldName, stidlenvar + 4), stidlenvar) <> rs!ST_ID Then
+            newName = Left(oldName, Len(oldName) - 4) & "_" & rs!ST_ID & ".jpg"
+            Name oldName As newName
+            rs.Edit
+            'rs!VendorYN = True
+            rs("PHOTO" & intcount) = Left(oldName, Len(oldName) - 4) & "_" & rs!map_no & "_" & rs!ST_ID & ".jpg" 'The other way to refer to a field
+            rs.Update
+        End If
+        
+    Next
+
+        'Save contact name into a variable
+        'sContactName = rs!FirstName & " " & rs!LastName
+
+        'Move to the next record. Don't ever forget to do this.
+        rs.MoveNext
+    Loop
+Else
+    MsgBox "There are no records in the recordset."
+End If
+
+MsgBox "Finished looping through records."
+
+rs.Close 'Close the recordset
+Set rs = Nothing 'Clean up
+End Sub

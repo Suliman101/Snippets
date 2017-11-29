@@ -1,0 +1,23 @@
+Private Sub CommandButton1_Click()
+CommandButton1.Select
+Selection.Delete
+    
+Dim exportdir As String
+Dim proptype As String
+Dim fullnamevar As String
+
+
+fullnamevar = Me.FormFields("fullname").Result
+proptype = "Clean_and_TV_Proposal"
+exportdir = "\\nwater-project1@42022\crmproposals\contact\" & fullnamevar & "\"
+If Dir(exportdir, vbDirectory) = "" Then
+    MkDir exportdir
+End If
+
+ChangeFileOpenDirectory exportdir
+      Options.DefaultFilePath(wdDocumentsPath) = CurDir
+      With Dialogs(wdDialogFileSaveAs)
+      .Name = proptype & "_" & Format(Date, "mm.dd.yyyy") & ".docx"
+      .Show
+      End With
+End Sub

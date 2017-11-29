@@ -1,0 +1,4 @@
+insert into mhus_t(mh_name,mh_Field_1,mh_Field_2,mh_Field_3) 
+
+select tree.st_id,Latitude, Longitude, [GNSS Height] from TREE 
+ where exists (select * from S_T where LCASE( REPLACE(REPLACE(S_T.S_StartNode,  ' ', ''), '.', '') ) = REPLACE(REPLACE(TREE.St_id, ' ', ''), '.', ''))

@@ -1,0 +1,13 @@
+'retrieves data from table "tree" based on field name (field1) and unique key (Point_ID)
+Public Function getvalue(field1 As Variant)
+Dim valph As Variant
+
+valph = DLookup(field1, "TREE", "Point_ID=" & Me.Point_ID.Value)
+
+If InStr(1, valph, " ") <= 5 Then
+	getvalue = Mid(valph, (InStr(1, valph, " ") + 1))
+Else
+	getvalue = valph
+End If
+
+End Function

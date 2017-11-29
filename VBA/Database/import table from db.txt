@@ -1,0 +1,8 @@
+'Import table to current database eg. tableimport("table name", "database file location", "database file name no ext")
+public function tableimport (tablen as string, filedir as string, databasefile as string)
+
+DoCmd.TransferDatabase acImport, "Microsoft Access", _
+    filedir & databasefile & ".mdb", acTable, tablen, _
+    tablen
+
+End function
